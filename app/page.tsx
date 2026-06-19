@@ -929,7 +929,7 @@ export default function WorkflowConsole() {
       <div className="max-w-4xl mx-auto space-y-8">
         <header>
           <h1 className="text-2xl font-bold text-gray-900">
-            AI Workflow Agent Console
+            AI Workflow Discovery & Triage Console
           </h1>
           <p className="text-sm text-gray-500 mt-1">
             Discover automation opportunities, design workflow plans, and manage

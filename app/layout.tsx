@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI Workflow Agent Console for Client Operations",
+  title: "AI Workflow Discovery & Triage Console for Client Operations",
   description:
     "Lightweight agentic workflow console for discovering, triaging, and handing off client operations work.",
 };
