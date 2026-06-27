@@ -85,28 +85,27 @@ function DiscoveryAgent() {
     <section className="border border-gray-200 rounded-xl p-6 bg-white shadow-sm">
       <div className="flex items-center gap-2 mb-4">
         <span className="text-lg">🔍</span>
-        <h2 className="text-lg font-semibold text-gray-800">Discovery Agent</h2>
+        <h2 className="text-lg font-semibold text-gray-800">AEC Workflow Discovery Agent</h2>
         <span className="ml-auto text-xs font-medium px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
           AI-Powered
         </span>
       </div>
       <p className="text-sm text-gray-500 mb-4">
-        Paste raw client notes, emails, or tickets. The agent will identify pain
-        points and surface automation opportunities.
+        Paste messy AEC project inputs (RFIs, BIM automation requests, LCA/Simulation handoffs). The agent will extract pain points and surface deployment opportunities.
       </p>
       <textarea
         className="w-full border border-gray-200 rounded-lg p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400 mb-3"
         rows={6}
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
-        placeholder="e.g. 'Every Monday morning the ops team manually exports the CRM report, copies it into a spreadsheet, and emails it to 12 people. Takes 2 hrs. Mistakes happen often...'"
+        placeholder="e.g. 'Project teams spend hours manually cross-referencing RFIs and submittals against Revit models, making it hard to track missing references and discipline owners before the coordination meeting...'"
       />
       <button
         onClick={handleDiscover}
         disabled={loading || !notes.trim()}
         className="bg-blue-600 text-white text-sm font-medium px-5 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
-        {loading ? "Analyzing..." : "Discover Opportunities"}
+        {loading ? "Analyzing Project Inputs..." : "Discover Deployment Opportunities"}
       </button>
 
       {error && (
@@ -119,14 +118,14 @@ function DiscoveryAgent() {
         <div className="mt-5 space-y-3 border-t border-gray-100 pt-4">
           <div>
             <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
-              Summary
+              Engineering Summary
             </span>
             <p className="text-sm text-gray-700 mt-1">{result.summary}</p>
           </div>
 
           <div>
             <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
-              Pain Points
+              Identified Pain Points
             </span>
             <ul className="mt-1 space-y-1">
               {result.painPoints?.map((p, i) => (
@@ -140,7 +139,7 @@ function DiscoveryAgent() {
 
           <div>
             <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
-              Recommended Workflow
+              Recommended Deployment Path
             </span>
             <p className="text-sm text-gray-700 mt-1">
               {result.recommendedWorkflow}
@@ -166,7 +165,7 @@ function DiscoveryAgent() {
             </div>
             <div>
               <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
-                Human Review Needed
+                Human-in-the-Loop Required
               </span>
               <p
                 className={`text-sm font-medium mt-1 ${
@@ -180,7 +179,7 @@ function DiscoveryAgent() {
 
           <div>
             <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
-              Success Metrics
+              Target Adoption Metrics
             </span>
             <ul className="mt-1 space-y-1">
               {result.successMetrics?.map((m, i) => (
@@ -269,14 +268,13 @@ function WorkflowArchitect({
       {/* Header */}
       <div className="flex items-center gap-2 mb-4">
         <span className="text-lg">🏗️</span>
-        <h2 className="text-lg font-semibold text-gray-800">Workflow Architect Agent</h2>
+        <h2 className="text-lg font-semibold text-gray-800">Deployment Plan Agent</h2>
         <span className="ml-auto text-xs font-medium px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">
           AI-Powered
         </span>
       </div>
       <p className="text-sm text-gray-500 mb-4">
-        Describe an automation objective. The agent designs a sprint-ready 3-5 day plan with
-        lightweight MVP tooling, strict human review gates, and a clear path to production.
+        Describe an engineering automation objective. The agent designs a sprint-ready MVP deployment plan with routing rules, strict human review gates, and JSON schema outputs.
       </p>
 
       {/* Input */}
@@ -285,14 +283,14 @@ function WorkflowArchitect({
         rows={4}
         value={objective}
         onChange={(e) => setObjective(e.target.value)}
-        placeholder="e.g. 'Automate the weekly CRM report generation and distribution to 12 stakeholders, with an approval gate before any data leaves the system.'"
+        placeholder="e.g. 'Automate repeated clash detection checks between Revit models and Rhino/Grasshopper structural studies before the weekly coordination meeting.'"
       />
       <button
         onClick={handleBuild}
         disabled={loading || !objective.trim()}
         className="bg-purple-600 text-white text-sm font-medium px-5 py-2 rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
-        {loading ? "Designing Sprint Plan..." : "Build Workflow Plan"}
+        {loading ? "Designing Deployment Plan..." : "Generate Pilot Workflow"}
       </button>
 
       {error && (
@@ -311,7 +309,7 @@ function WorkflowArchitect({
 
           {/* Workflow Steps */}
           <div>
-            <SectionLabel>MVP Workflow Steps</SectionLabel>
+            <SectionLabel>MVP Deployment Steps</SectionLabel>
             <div className="space-y-2">
               {plan.mvpWorkflowSteps?.map((step, i) => (
                 <div key={i} className="flex gap-3 p-3 rounded-lg bg-purple-50 border border-purple-100">
@@ -337,16 +335,16 @@ function WorkflowArchitect({
           {/* MVP vs Production Stack */}
           <div className="grid grid-cols-2 gap-3">
             <div className="p-3 rounded-lg bg-green-50 border border-green-100">
-              <SectionLabel>MVP Tool Stack</SectionLabel>
-              <p className="text-xs text-green-700 mb-2">Mapped to steps only — no unused tools</p>
+              <SectionLabel>Pilot Tool Stack</SectionLabel>
+              <p className="text-xs text-green-700 mb-2">Mapped to MVP steps</p>
               <TagList items={plan.prototypeToolStack.filter((t) => t.toLowerCase() !== "google sheets")} color="bg-green-100 text-green-800" />
-              {plan.prototypeToolStack.some((t) => t.toLowerCase().includes("shopify") || plan.mvpWorkflowSteps.some((s) => s.whatHappens.toLowerCase().includes("shopify"))) && (
-                <p className="text-xs text-green-600 mt-2 italic">Includes simulated Shopify lookup to validate order routing rules.</p>
+              {plan.prototypeToolStack.some((t) => t.toLowerCase().includes("procore") || plan.mvpWorkflowSteps.some((s) => s.whatHappens.toLowerCase().includes("procore"))) && (
+                <p className="text-xs text-green-600 mt-2 italic">Includes simulated Procore/BIM360 lookup to validate routing.</p>
               )}
             </div>
             <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
-              <SectionLabel>Production Tool Stack</SectionLabel>
-              <p className="text-xs text-slate-500 mb-2">Scale when proven</p>
+              <SectionLabel>Scale Rollout Stack</SectionLabel>
+              <p className="text-xs text-slate-500 mb-2">Adopt when proven</p>
               <TagList items={plan.productionToolStack} color="bg-slate-200 text-slate-700" />
             </div>
           </div>
@@ -354,18 +352,18 @@ function WorkflowArchitect({
           {/* Routing & Human Review Rules */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="p-3 rounded-lg bg-blue-50 border border-blue-100">
-              <SectionLabel>Routing Rules</SectionLabel>
+              <SectionLabel>Discipline Routing</SectionLabel>
               <RuleList items={plan.routingRules} icon="↪" />
             </div>
             <div className="p-3 rounded-lg bg-amber-50 border border-amber-100">
-              <SectionLabel>Human Review Gates</SectionLabel>
+              <SectionLabel>Engineering Review Gates</SectionLabel>
               <RuleList items={plan.humanReviewRules} icon="🔒" />
             </div>
           </div>
 
           {/* Acceptance Criteria */}
           <div className="p-3 rounded-lg bg-gray-50 border border-gray-200">
-            <SectionLabel>Acceptance Criteria</SectionLabel>
+            <SectionLabel>Adoption & Acceptance Criteria</SectionLabel>
             <ul className="mt-1 space-y-1.5">
               {plan.acceptanceCriteria?.map((criterion, i) => (
                 <li key={i} className="flex gap-2 text-sm text-gray-700">
@@ -379,11 +377,11 @@ function WorkflowArchitect({
           {/* Failure Handling & Metrics — side by side */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="p-3 rounded-lg bg-red-50 border border-red-100">
-              <SectionLabel>Failure Handling</SectionLabel>
+              <SectionLabel>Failure Modes</SectionLabel>
               <RuleList items={plan.failureHandling} icon="⚠" />
             </div>
             <div className="p-3 rounded-lg bg-indigo-50 border border-indigo-100">
-              <SectionLabel>Metrics to Track</SectionLabel>
+              <SectionLabel>Operational Metrics</SectionLabel>
               <RuleList items={plan.metricsToTrack} icon="📊" />
             </div>
           </div>
@@ -394,7 +392,7 @@ function WorkflowArchitect({
               onClick={() => setSchemaOpen((v) => !v)}
               className="w-full flex items-center justify-between px-3 py-2 bg-gray-50 text-xs font-semibold text-gray-500 uppercase tracking-wide hover:bg-gray-100 transition-colors"
             >
-              <span>Structured Output Schema</span>
+              <span>Required JSON Schema Contract</span>
               <span className="text-gray-400">{schemaOpen ? "▲" : "▼"}</span>
             </button>
             {schemaOpen && (
@@ -412,43 +410,43 @@ function WorkflowArchitect({
   );
 }
 
-// ---- Shared e-commerce queue data ----
+// ---- Shared AEC queue data ----
 
 const INITIAL_QUEUE: ReviewItem[] = [
   {
     id: "rev-001",
-    title: "Refund request with payment mismatch",
+    title: "RFI / Spec Review Intake",
     summary:
-      "Customer #C-44821 submitted a $89.99 refund for order #ORD-9913 but the Shopify payment record shows $79.99. Delta of $10 requires manual reconciliation.",
+      "Missing structural reference found in Level 4 MEP layout. Requires cross-discipline check before response is issued.",
     riskLevel: "high",
     decisionRequired:
-      "Approve the refund at the original $79.99 charge, approve the claimed $89.99, or reject and contact the customer for clarification.",
-    context: "Order #ORD-9913 · Payment gateway: Stripe · Submitted: 2024-06-14.",
+      "Assign to Structural Lead for review, or return to contractor for clarification.",
+    context: "RFI #204-A · Project: London HQ · Source: Procore",
     status: "pending",
     cardType: "case-review",
   },
   {
     id: "rev-002",
-    title: "Missing Shopify order ID on return label",
+    title: "BIM / Computational Automation Request",
     summary:
-      "Return label was generated by the automation but the Shopify order ID field is blank. Cannot link the return to a customer record without it.",
+      "Automation pilot workflow generated for Revit-to-Rhino export, but required BIM Lead owner is unassigned.",
     riskLevel: "medium",
     decisionRequired:
-      "Manually locate and attach the correct Shopify order ID, or void the label and ask the customer to re-initiate the return.",
-    context: "Return label #RTN-2024-0541 · Carrier: UPS · Created: 2024-06-13.",
+      "Assign BIM Lead owner and approve the pilot workflow deployment.",
+    context: "Request: Automated geometry export · Frequency: Weekly",
     status: "pending",
     cardType: "case-review",
   },
   {
     id: "rev-003",
-    title: "Carrier delay with low confidence match",
+    title: "LCA / Simulation Handoff",
     summary:
-      "Tracking event shows a 4-day delay for shipment #TRK-882019, but the AI confidence score for matching it to the correct order is 61% — below the 80% auto-resolve threshold.",
+      "Envelope material scenarios extracted, but daylight simulation assumptions flag a potential inconsistency in glazing properties.",
     riskLevel: "low",
     decisionRequired:
-      "Confirm the order match and approve a proactive delay notification to the customer, or flag for manual investigation.",
+      "Review assumptions checklist and confirm scenario parameters before running full Tally/OpenLCA simulation.",
     context:
-      "Shipment #TRK-882019 · Carrier: FedEx · Expected delivery: 2024-06-12 (now: 2024-06-16).",
+      "Model: South Facade Opt 2 · Tool: Rhino/Grasshopper",
     status: "pending",
     cardType: "case-review",
   },
@@ -475,23 +473,23 @@ function HumanReviewQueue({
   };
 
   const cardTypeLabel: Record<ReviewItem["cardType"], string> = {
-    "plan-review": "PLAN REVIEW",
-    "case-review": "CASE REVIEW",
+    "plan-review": "DEPLOYMENT PLAN",
+    "case-review": "ENGINEERING REVIEW",
   };
 
   // Context-aware resolved label: plan items get sprint-specific copy, case items get generic copy.
   function resolvedLabel(item: ReviewItem): { text: string; cls: string } {
     if (item.status === "info-requested") {
-      return { text: "Info Requested", cls: "bg-blue-100 text-blue-700" };
+      return { text: "Details Requested", cls: "bg-blue-100 text-blue-700" };
     }
     if (item.cardType === "plan-review") {
       return item.status === "approved"
-        ? { text: "Approved — Sprint authorized", cls: "bg-green-100 text-green-700" }
-        : { text: "Rejected — Sprint not authorized", cls: "bg-red-100 text-red-700" };
+        ? { text: "Approved — Pilot authorized", cls: "bg-green-100 text-green-700" }
+        : { text: "Rejected — Pilot not authorized", cls: "bg-red-100 text-red-700" };
     }
     return item.status === "approved"
-      ? { text: "Approved — Case resolved", cls: "bg-green-100 text-green-700" }
-      : { text: "Rejected — Case escalated", cls: "bg-red-100 text-red-700" };
+      ? { text: "Approved — Resolution sent", cls: "bg-green-100 text-green-700" }
+      : { text: "Rejected — Escalated to PM", cls: "bg-red-100 text-red-700" };
   }
 
   const pending = queue.filter((i) => i.status === "pending");
@@ -501,7 +499,7 @@ function HumanReviewQueue({
     <section className="border border-gray-200 rounded-xl p-6 bg-white shadow-sm">
       <div className="flex items-center gap-2 mb-4">
         <span className="text-lg">👤</span>
-        <h2 className="text-lg font-semibold text-gray-800">Human Review Queue</h2>
+        <h2 className="text-lg font-semibold text-gray-800">Engineering Review Queue</h2>
         {pending.length > 0 && (
           <span className="ml-auto text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">
             {pending.length} Pending
@@ -509,12 +507,12 @@ function HumanReviewQueue({
         )}
       </div>
       <p className="text-sm text-gray-500 mb-5">
-        Items flagged by agents that require a human decision before the workflow continues.
+        High-risk AEC inputs flagged by the agent that require discipline lead or project manager approval before execution.
       </p>
 
       {pending.length === 0 && resolved.length === 0 && (
         <p className="text-sm text-gray-400 text-center py-8">
-          Queue is empty. No items awaiting review.
+          Queue is empty. No engineering items awaiting review.
         </p>
       )}
 
@@ -554,7 +552,7 @@ function HumanReviewQueue({
                 onClick={() => onDecide(item.id, "info-requested")}
                 className="text-xs font-medium px-3 py-1.5 rounded-md border border-gray-300 text-gray-600 bg-white hover:bg-gray-50 transition-colors"
               >
-                Request Info
+                Request Context
               </button>
             </div>
           </div>
@@ -591,10 +589,10 @@ function HumanReviewQueue({
 // ---- Workflow Handoff Module ----
 
 const HANDOFF_STEPS_TEMPLATE: Omit<HandoffStep, "timestamp">[] = [
-  { label: "n8n webhook", detail: "Workflow trigger registered", status: "pending" },
-  { label: "Airtable record", detail: "Sprint plan row created", status: "pending" },
-  { label: "Slack notification", detail: "Team channel notified", status: "pending" },
-  { label: "Human review item", detail: "Review item added to queue", status: "pending" },
+  { label: "n8n webhook", detail: "Deployment trigger registered", status: "pending" },
+  { label: "Airtable record", detail: "Adoption audit row created", status: "pending" },
+  { label: "Slack notification", detail: "Project team channel notified", status: "pending" },
+  { label: "Engineering review item", detail: "Review item added to queue", status: "pending" },
 ];
 
 function fmt(d: Date) {
@@ -664,12 +662,12 @@ function WorkflowHandoff({
     // Build the queue item — short 2-sentence summary
     const newItem: ReviewItem = {
       id: `rev-handoff-${Date.now()}`,
-      title: `Sprint plan ready: ${plan.workflowName}`,
-      summary: `The Workflow Architect generated a ${plan.mvpWorkflowSteps.length}-step MVP plan using ${plan.prototypeToolStack.join(", ")}. Authorize the sprint before any automation runs.`,
+      title: `Deployment plan ready: ${plan.workflowName}`,
+      summary: `The Deployment Agent generated a ${plan.mvpWorkflowSteps.length}-step plan using ${plan.prototypeToolStack.join(", ")}. Authorize the pilot before pushing to live project environments.`,
       riskLevel: "medium",
       decisionRequired:
-        "Confirm the MVP tool stack is approved and authorize the sprint to begin.",
-      context: `${plan.mvpWorkflowSteps.length} steps · ${plan.prototypeToolStack.length} MVP tools · ${plan.humanReviewRules.length} human gates`,
+        "Confirm the data contracts are safe and authorize the pilot workflow to begin.",
+      context: `${plan.mvpWorkflowSteps.length} steps · ${plan.prototypeToolStack.length} tools · ${plan.humanReviewRules.length} review gates`,
       status: "pending",
       cardType: "plan-review",
     };
@@ -681,9 +679,9 @@ function WorkflowHandoff({
     <div className="mt-5 pt-5 border-t border-gray-100">
       <div className="flex items-center justify-between mb-3">
         <div>
-          <p className="text-sm font-semibold text-gray-800">Workflow Handoff</p>
+          <p className="text-sm font-semibold text-gray-800">System Handoff</p>
           <p className="text-xs text-gray-500 mt-0.5">
-            Push this plan to the automation stack and create a human review item.
+            Push this workflow to the automation stack and create an adoption audit item.
           </p>
         </div>
         <button
@@ -691,9 +689,9 @@ function WorkflowHandoff({
           disabled={handoffStatus !== "idle"}
           className="shrink-0 text-xs font-semibold px-4 py-2 rounded-lg bg-gray-900 text-white hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          {handoffStatus === "idle" && "Send Plan for Approval"}
-          {handoffStatus === "running" && "Sending..."}
-          {handoffStatus === "done" && "Sent ✓"}
+          {handoffStatus === "idle" && "Deploy Plan for Approval"}
+          {handoffStatus === "running" && "Deploying..."}
+          {handoffStatus === "done" && "Deployed ✓"}
           {handoffStatus === "error" && "Failed — retry?"}
         </button>
       </div>
@@ -738,13 +736,13 @@ function WorkflowHandoff({
 // ---- Run Staged Ticket ----
 
 const STAGED_TICKET = {
-  eventType: "customer_ticket_received",
-  ticketId: "ZD-10023",
-  orderId: "ORD-9913",
-  issueText: "Customer requested an $89.99 refund, but Shopify payment record shows $79.99.",
-  sourceChannel: "Agent Console Demo",
+  eventType: "rfi_intake_received",
+  ticketId: "RFI-2026-089",
+  projectId: "PRJ-LDN-HQ",
+  issueText: "Contractor requests clarification on structural steel connections for the South Atrium. Revit model shows clash with HVAC routing.",
+  sourceChannel: "Procore integration",
   sensitivity: "High",
-  createdAt: "2026-06-16T21:15:00Z",
+  createdAt: "2026-06-27T15:26:00Z",
 };
 
 interface RuntimeResult {
@@ -828,13 +826,13 @@ function RunStagedTicket() {
     <section className="border border-gray-200 rounded-xl p-6 bg-white shadow-sm">
       <div className="flex items-center gap-2 mb-3">
         <span className="text-lg">🎫</span>
-        <h2 className="text-lg font-semibold text-gray-800">Run Staged Ticket</h2>
+        <h2 className="text-lg font-semibold text-gray-800">Run Staged Project Input</h2>
         <span className="ml-auto text-xs font-medium px-2 py-0.5 rounded-full bg-orange-100 text-orange-700">
           Staged Runtime
         </span>
       </div>
       <p className="text-sm text-gray-500 mb-4">
-        Run a pre-configured e-commerce support ticket through the staged runtime pipeline to validate classification, routing, and human-review behavior.
+        Run a pre-configured AEC project input through the staged runtime pipeline to validate classification, routing, and engineering review logic.
       </p>
 
       {/* Editable payload */}
@@ -864,8 +862,8 @@ function RunStagedTicket() {
         disabled={status !== "idle" || !!parseError}
         className="text-sm font-semibold px-5 py-2 rounded-lg bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
-        {status === "idle" && "Run Staged Ticket"}
-        {status === "running" && "Running..."}
+        {status === "idle" && "Run Staged Payload"}
+        {status === "running" && "Executing..."}
         {status === "done" && "Completed ✓"}
         {status === "error" && "Failed — retry?"}
       </button>
@@ -878,14 +876,14 @@ function RunStagedTicket() {
             <span className="ml-auto text-xs font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-700">n8n response</span>
           </div>
           <div className="px-4 py-3 space-y-0">
-            <ResultRow label="Ticket" value={result.ticketId ?? STAGED_TICKET.ticketId} />
+            <ResultRow label="Project Input" value={result.ticketId ?? STAGED_TICKET.ticketId} />
             <ResultRow label="Category" value={result.category as string} />
             <ResultRow label="Confidence" value={result.confidence !== undefined ? `${result.confidence}` : undefined} />
-            <ResultRow label="Route" value={result.route as string} />
+            <ResultRow label="Discipline Route" value={result.route as string} />
             <ResultRow label="Recommended Owner" value={result.recommendedOwner as string} />
             <ResultRow label="Reason" value={result.reason as string} />
-            <ResultRow label="Airtable Record" value={result.airtableRecord as string} />
-            <ResultRow label="Slack Alert" value={result.slackAlert as string} />
+            <ResultRow label="Audit Record" value={result.airtableRecord as string} />
+            <ResultRow label="Team Alert" value={result.slackAlert as string} />
             <ResultRow label="Execution Time" value={result.executionTime !== undefined ? `${result.executionTime}` : undefined} />
           </div>
           {/* Fallback: show raw JSON if none of the mapped fields matched */}
@@ -929,11 +927,10 @@ export default function WorkflowConsole() {
       <div className="max-w-4xl mx-auto space-y-8">
         <header>
           <h1 className="text-2xl font-bold text-gray-900">
-            AI Workflow Discovery & Triage Console
+            AEC AI Workflow Deployment Console
           </h1>
           <p className="text-sm text-gray-500 mt-1">
-            Discover automation opportunities, design workflow plans, and manage
-            human review gates for client operations.
+            A staged prototype for deploying agentic AI workflows into engineering project teams with structured intake, review gates, testing, feedback capture, and adoption guidance.
           </p>
         </header>
 
