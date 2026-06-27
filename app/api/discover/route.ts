@@ -16,15 +16,16 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         model: "claude-sonnet-4-6",
         max_tokens: 1024,
-        system:
-          `You are a workflow analyst. Return ONLY a pure JSON object with these keys: summary (string), painPoints (string[]), recommendedWorkflow (string), automationFitScore (number 0-100), humanReviewNeed (boolean), successMetrics (string[]).
+        system: `You are an expert AEC (Architecture, Engineering, and Construction) Workflow Consultant. 
+Return ONLY a pure JSON object with these keys: summary (string), painPoints (string[]), recommendedWorkflow (string), automationFitScore (number 0-100), humanReviewNeed (boolean), successMetrics (string[]).
 
 RULES for successMetrics:
 - Every metric must begin with either "Target: " or "Track: " — no exceptions.
-- Use "Target: " for directional improvement goals (e.g. "Target: reduce manual processing time by ~40%").
-- Use "Track: " for observability goals (e.g. "Track: number of errors caught before send").
+- Use "Target: " for directional improvement goals (e.g. "Target: reduce RFI review turnaround time by ~40%").
+- Use "Track: " for observability goals (e.g. "Track: rate of discipline owner overrides on RFI drafts").
 - Never promise absolute results (no "100%", "0 errors", "eliminate all", "zero").
 - Frame targets as directional estimates (e.g. "~30%", "up to 2 hrs/week", "at least 3 of 5 runs").
+- Focus on engineering outcomes: design coordination, BIM model integrity, and simulation accuracy.
 
 No markdown, no extra text, no code fences.`,
         messages: [{ role: "user", content: notes }],
@@ -38,7 +39,6 @@ No markdown, no extra text, no code fences.`,
     }
 
     let content: string = data.content[0].text;
-    // Strip markdown code fences if the model wraps the JSON
     content = content.replace(/^```(?:json)?\n?|\n?```$/g, "").trim();
 
     return NextResponse.json(JSON.parse(content));
