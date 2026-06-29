@@ -10,7 +10,6 @@ export async function POST(req: Request) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // 密码已经帮你填好了，不要动这一行
         "x-api-key": "sk-r0qzsY2vZmkTyWMBIUSLuFt4qrjg3S9w3mspo0wJxa4yRaxr",
         "anthropic-version": "2023-06-01",
       },
