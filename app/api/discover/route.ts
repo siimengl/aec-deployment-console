@@ -10,7 +10,8 @@ export async function POST(req: Request) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY || "",
+        // REPLACE THE STRING BELOW WITH YOUR ACTUAL API KEY
+        "x-api-key": "YOUR_ACTUAL_API_KEY_HERE",
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
