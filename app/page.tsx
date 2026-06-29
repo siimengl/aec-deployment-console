@@ -586,6 +586,71 @@ function HumanReviewQueue({
   );
 }
 
+// ---- Feedback & Adoption Log Section (NEW) ----
+const ADOPTION_LOGS = [
+  {
+    id: "log-1",
+    date: "2026-06-25",
+    type: "Adoption Blocker",
+    title: "Discipline Leads ignoring Slack alerts",
+    detail: "Engineers reported alert fatigue from the n8n bot. Solution: Updated JSON schema to enforce specific `@mention` targeting based on the 'discipline owner' field.",
+    status: "Resolved"
+  },
+  {
+    id: "log-2",
+    date: "2026-06-27",
+    type: "Training Need",
+    title: "Prompting guidelines for LCA simulation handoff",
+    detail: "Sustainability team needed examples of how to format grasshopper export data for the agent. Created a 1-page prompting template.",
+    status: "Deployed"
+  },
+  {
+    id: "log-3",
+    date: "2026-06-28",
+    type: "Schema Update",
+    title: "Added confidence score threshold",
+    detail: "BIM automation requests were getting misrouted. Added a Python validation step in n8n to force human review if AI confidence < 85%.",
+    status: "Resolved"
+  }
+];
+
+function FeedbackAdoptionLog() {
+  return (
+    <section className="border border-gray-200 rounded-xl p-6 bg-white shadow-sm mt-8">
+      <div className="flex items-center gap-2 mb-4">
+        <span className="text-lg">📈</span>
+        <h2 className="text-lg font-semibold text-gray-800">Feedback & Adoption Log</h2>
+        <span className="ml-auto text-xs font-medium px-2 py-0.5 rounded-full bg-teal-100 text-teal-700">
+          Operationalization
+        </span>
+      </div>
+      <p className="text-sm text-gray-500 mb-5">
+        Capturing adoption blockers, training needs, schema improvements, and lessons learned from live project teams.
+      </p>
+      <div className="space-y-3">
+        {ADOPTION_LOGS.map(log => (
+          <div key={log.id} className="border border-gray-100 rounded-lg p-4 bg-gray-50 flex gap-4">
+            <div className="shrink-0 pt-1">
+              <span className={`text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide ${
+                log.type === 'Adoption Blocker' ? 'bg-red-100 text-red-700' :
+                log.type === 'Training Need' ? 'bg-blue-100 text-blue-700' :
+                'bg-purple-100 text-purple-700'
+              }`}>
+                {log.type}
+              </span>
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-gray-800">{log.title}</h3>
+              <p className="text-xs text-gray-600 mt-1">{log.detail}</p>
+              <p className="text-[10px] text-gray-400 mt-2 font-medium">Logged: {log.date} • Status: {log.status}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 // ---- Workflow Handoff Module ----
 
 const HANDOFF_STEPS_TEMPLATE: Omit<HandoffStep, "timestamp">[] = [
@@ -938,6 +1003,8 @@ export default function WorkflowConsole() {
         <WorkflowArchitect onHandoffComplete={handleHandoffComplete} />
         <RunStagedTicket />
         <HumanReviewQueue queue={queue} onDecide={handleDecide} />
+        
+        <FeedbackAdoptionLog />
       </div>
     </div>
   );
