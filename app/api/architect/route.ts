@@ -22,18 +22,16 @@ export async function POST(req: Request) {
     });
 
     const data = await response.json();
-    
+
     if (data.error) {
       throw new Error(JSON.stringify(data.error));
     }
 
     const rawContent = data.content[0].text;
-    const cleanContent = rawContent.replace(/
-```json/g, "").replace(/```/g, "").trim();
-    
+    const cleanContent = rawContent.replace(/```json/g, "").replace(/```/g, "").trim();
+
     return NextResponse.json(JSON.parse(cleanContent));
   } catch (error) {
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }
-```eof
